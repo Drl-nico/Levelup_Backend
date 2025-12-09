@@ -17,6 +17,10 @@ public class Boleta {
     @OneToMany(mappedBy = "boleta", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BoletaItem> items;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -28,4 +32,7 @@ public class Boleta {
 
     public List<BoletaItem> getItems() { return items; }
     public void setItems(List<BoletaItem> items) { this.items = items; }
+
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 }

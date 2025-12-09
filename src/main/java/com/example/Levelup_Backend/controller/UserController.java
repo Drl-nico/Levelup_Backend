@@ -32,8 +32,6 @@ public class UserController {
         }
         return ResponseEntity.ok(u);
     }
-
-    // ✔ Corrección importante: devuelve 404 si el usuario no existe
     @GetMapping("/email")
     public ResponseEntity<?> getUserByEmail(@RequestParam String email) {
         User u = userService.getUserByEmail(email);
@@ -43,13 +41,11 @@ public class UserController {
         }
         return ResponseEntity.ok(u);
     }
-
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody User user) {
         User creado = userService.saveUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(creado);
     }
-
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(
             @PathVariable Long id,
@@ -59,7 +55,6 @@ public class UserController {
         User actualizado = userService.saveUser(user);
         return ResponseEntity.ok(actualizado);
     }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);

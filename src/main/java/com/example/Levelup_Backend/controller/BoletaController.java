@@ -4,6 +4,8 @@ import com.example.Levelup_Backend.Dto.BoletaRequestDTO;
 import com.example.Levelup_Backend.model.Boleta;
 import com.example.Levelup_Backend.service.BoletaService;
 import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/boletas")
 @CrossOrigin(origins = "http://localhost:3000")
+@Tag(name = "Boletas", description = "Operaciones de creación y consulta de boletas de compra")
 public class BoletaController {
 
     @Autowired
@@ -39,6 +42,7 @@ public class BoletaController {
         }
     }
 
+    @Operation(summary = "Listar boletas", description = "Obtiene el historial de boletas generadas")
     @GetMapping
     public List<Boleta> obtenerBoletas() {
         return boletaService.obtenerBoletas();

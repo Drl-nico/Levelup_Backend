@@ -10,9 +10,17 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
-        OpenAPI openAPI = new OpenAPI();
-        // For local development set the server URL to the port your backend uses
-        openAPI.addServersItem(new Server().url("http://localhost:8082"));
-        return openAPI;
+        return new OpenAPI()
+                .info(new io.swagger.v3.oas.models.info.Info()
+                        .title("LevelUp API")
+                        .version("1.0")
+                        .description("Documentación de la API para el sistema E-commerce LevelUp"))
+                .addServersItem(new Server().url("http://localhost:8082"))
+                .components(new io.swagger.v3.oas.models.Components()
+                        .addSecuritySchemes("bearer-key",
+                                new io.swagger.v3.oas.models.security.SecurityScheme()
+                                        .type(io.swagger.v3.oas.models.security.SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")));
     }
 }

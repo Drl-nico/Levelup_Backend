@@ -6,6 +6,10 @@ import com.example.Levelup_Backend.Dto.UserDto;
 import com.example.Levelup_Backend.model.User;
 import com.example.Levelup_Backend.service.UserService;
 import com.example.Levelup_Backend.security.JwtUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = "http://localhost:3000")
+@Tag(name = "Autenticación", description = "Endpoints para inicio de sesión y registro de usuarios")
 public class AuthController {
 
     @Autowired
@@ -32,12 +37,16 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Operation(summary = "Iniciar sesión", description = "Autentica a un usuario mediante email y contraseña, retornando un token JWT")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Autenticación exitosa, retorna token"),
+            @ApiResponse(responseCode = "401", description = "Credenciales inválidas")
+    })
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-            );
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
             User user = userService.getUserByEmail(request.getEmail());
             String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
@@ -49,6 +58,8 @@ public class AuthController {
         }
     }
 
+    @Operation(summary = "Registrar usuario", description = "Crea una nueva cuenta de usuario y retorna un token JWT")
+    @ApiResponse(responseCode = "201", description = "Usuario registrado exitosamente")
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
         // encode password
